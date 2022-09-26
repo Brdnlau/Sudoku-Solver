@@ -1,3 +1,37 @@
+try:
+    import pysat
+except:
+    !pip install python-sat
+    import pysat
+import numpy as np
+
+class SudokuViaSAT(object):
+
+    def __init__(self, sudoku_string):
+        """
+        @param sudoku_string: an 81-long digit string: 0 represents an unknown
+            digit, and 1..9 represent the respective digit.
+        """
+        assert len(sudoku_string) > 80
+        self.board = np.zeros((9, 9), dtype=np.uint8)
+        for i in range(9):
+            for j in range(9):
+                self.board[i, j] = int(sudoku_string[i * 9 + j])
+        self.sat = None # This will be the SAT instance.
+
+    def show(self):
+        """Prints out the board."""
+        print("+---+---+---+")
+        for i in range(9):
+            r = '|'
+            for j in range(9):
+                r += "." if self.board[i, j] == 0 else str(self.board[i, j])
+                if (j + 1) % 3 == 0:
+                    r += "|"
+            print(r)
+            if (i + 1) % 3 == 0:
+                print("+---+---+---+")
+                
 def encode_variable(d, i, j):
     """This function creates the variable (the integer) representing the
     fact that digit d appears in position i, j.
